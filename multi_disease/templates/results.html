@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results - Medisense AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        medisense: {
+                            dark: '#0A3323',
+                            moss: '#839958',
+                            beige: '#F7F4D5',
+                            rosy: '#D3968C',
+                            midnight: '#105666',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+    </style>
+</head>
+<body style="background-color: #F7F4D5;">
+
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/dashboard" class="flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-medisense-dark to-medisense-moss p-2 rounded-xl">
+                        <i class="bi bi-heart-pulse-fill text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold" style="color: #0A3323;">Medisense AI</span>
+                    </div>
+                </a>
+
+                <a href="/dashboard" class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all duration-300" style="color: #839958;">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-6">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-4">
+                    {% if prediction.disease_type == 'diabetes' %}
+                    <div class="w-16 h-16 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #0A3323, #839958);">
+                        <i class="bi bi-droplet-fill text-white text-3xl"></i>
+                    </div>
+                    {% elif prediction.disease_type == 'heart' %}
+                    <div class="w-16 h-16 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #D3968C, #839958);">
+                        <i class="bi bi-heart-pulse-fill text-white text-3xl"></i>
+                    </div>
+                    {% elif prediction.disease_type == 'stroke' %}
+                    <div class="w-16 h-16 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #105666, #839958);">
+                        <i class="bi bi-lightning-fill text-white text-3xl"></i>
+                    </div>
+                    {% else %}
+                    <div class="w-16 h-16 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #839958, #105666);">
+                        <i class="bi bi-lungs-fill text-white text-3xl"></i>
+                    </div>
+                    {% endif %}
+                    <div>
+                        <h1 class="text-3xl font-bold" style="color: #0A3323;">{{ prediction.disease_type.capitalize() }} Assessment Results</h1>
+                        <p class="text-gray-600">{{ prediction.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="text-center p-6 rounded-xl" style="background-color: #F7F4D5;">
+                    <div class="text-4xl font-bold mb-2 {% if prediction.prediction_result == 'Positive' %}text-red-600{% else %}text-green-600{% endif %}">
+                        {{ prediction.prediction_result }}
+                    </div>
+                    <div class="text-sm text-gray-600">Prediction Result</div>
+                </div>
+
+                <div class="text-center p-6 rounded-xl" style="background-color: #F7F4D5;">
+                    <div class="text-4xl font-bold mb-2" style="color: #839958;">{{ prediction.risk_score|round(1) }}%</div>
+                    <div class="text-sm text-gray-600">Risk Score</div>
+                </div>
+
+                <div class="text-center p-6 rounded-xl" style="background-color: #F7F4D5;">
+                    <div class="text-4xl font-bold mb-2 {% if prediction.risk_category == 'High' %}text-red-600{% elif prediction.risk_category == 'Medium' %}text-yellow-600{% else %}text-green-600{% endif %}">
+                        {{ prediction.risk_category }}
+                    </div>
+                    <div class="text-sm text-gray-600">Risk Category</div>
+                </div>
+            </div>
+
+            {% if prediction.prediction_result == 'Positive' and prediction.gemini_recommendation %}
+            <div class="border-t-2 pt-6" style="border-color: #839958;">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2" style="color: #0A3323;">
+                    <i class="bi bi-cpu" style="color: #839958;"></i>
+                    AI Treatment Recommendations
+                </h2>
+                <div class="text-gray-700 leading-relaxed" style="line-height: 1.8; white-space: pre-line;">
+                    {{ prediction.gemini_recommendation }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if hospitals and hospitals|length > 0 %}
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-6">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2" style="color: #0A3323;">
+                <i class="bi bi-hospital" style="color: #105666;"></i>
+                Recommended Hospitals Near You
+            </h2>
+
+            <div class="space-y-4">
+                {% for hospital in hospitals %}
+                <div class="p-4 rounded-xl border-2 border-gray-100 hover:border-medisense-moss transition-all duration-300">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start gap-4 flex-1">
+                            <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: rgba(16, 86, 102, 0.1);">
+                                <i class="bi bi-hospital-fill text-2xl" style="color: #105666;"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold mb-1" style="color: #0A3323;">{{ hospital.name }}</h3>
+                                <p class="text-sm text-gray-600 mb-2">
+                                    <i class="bi bi-geo-alt-fill" style="color: #839958;"></i>
+                                    Distance: {{ hospital.distance }} km
+                                </p>
+                            </div>
+                        </div>
+                        <a href="{{ hospital.google_maps_link }}" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 hover:shadow-lg" style="background: linear-gradient(to right, #105666, #839958);">
+                            <i class="bi bi-map"></i>
+                            <span>Directions</span>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <h2 class="text-2xl font-bold mb-6" style="color: #0A3323;">Next Steps</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <a href="/chatbot" class="p-6 rounded-xl border-2 border-gray-100 hover:border-medisense-moss transition-all duration-300 cursor-pointer">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: rgba(131, 153, 88, 0.1);">
+                            <i class="bi bi-chat-dots text-2xl" style="color: #839958;"></i>
+                        </div>
+                        <h3 class="text-lg font-bold" style="color: #0A3323;">Ask Health Questions</h3>
+                    </div>
+                    <p class="text-gray-600">Chat with our AI assistant for more health guidance</p>
+                </a>
+
+                <a href="/dashboard" class="p-6 rounded-xl border-2 border-gray-100 hover:border-medisense-moss transition-all duration-300 cursor-pointer">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: rgba(16, 86, 102, 0.1);">
+                            <i class="bi bi-clipboard-pulse text-2xl" style="color: #105666;"></i>
+                        </div>
+                        <h3 class="text-lg font-bold" style="color: #0A3323;">Take Another Assessment</h3>
+                    </div>
+                    <p class="text-gray-600">Check other health conditions</p>
+                </a>
+            </div>
+
+            <div class="mt-6 p-4 rounded-xl" style="background-color: #F7F4D5;">
+                <p class="text-sm text-gray-700 flex items-start gap-2">
+                    <i class="bi bi-info-circle-fill text-lg flex-shrink-0" style="color: #839958;"></i>
+                    <span><strong>Disclaimer:</strong> This is an AI-generated prediction for informational purposes only. Always consult qualified healthcare professionals for proper diagnosis and treatment.</span>
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

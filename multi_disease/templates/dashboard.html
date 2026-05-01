@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Medisense AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        medisense: {
+                            dark: '#0A3323',
+                            moss: '#839958',
+                            beige: '#F7F4D5',
+                            rosy: '#D3968C',
+                            midnight: '#105666',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body style="background-color: #F7F4D5;">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-medisense-dark to-medisense-moss p-2 rounded-xl">
+                        <i class="bi bi-heart-pulse-fill text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold" style="color: #0A3323;">Medisense AI</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <a href="/chatbot" class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all duration-300" style="color: #839958; background-color: rgba(131, 153, 88, 0.1);">
+                        <i class="bi bi-chat-dots"></i>
+                        <span class="hidden sm:inline">Chatbot</span>
+                    </a>
+                    <a href="/hospital" class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all duration-300" style="color: #105666; background-color: rgba(16, 86, 102, 0.1);">
+                        <i class="bi bi-hospital"></i>
+                        <span class="hidden sm:inline">Hospitals</span>
+                    </a>
+                    <a href="/logout" class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all duration-300" style="color: #D3968C; background-color: rgba(211, 150, 140, 0.1);">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="hidden sm:inline">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold mb-2" style="color: #0A3323;">Welcome back, {{ user.email.split('@')[0].capitalize() }}</h1>
+            <p class="text-gray-600">Monitor your health and get AI-powered predictions</p>
+        </div>
+
+        <!-- Disease Prediction Cards -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <a href="/diabetes" class="bg-white rounded-2xl p-6 shadow-lg card-hover cursor-pointer">
+                <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #0A3323, #839958);">
+                    <i class="bi bi-droplet-fill text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2" style="color: #0A3323;">Diabetes</h3>
+                <p class="text-gray-600 text-sm mb-3">Check your diabetes risk</p>
+                <div class="flex items-center gap-2" style="color: #839958;">
+                    <span class="text-sm font-semibold">Start Test</span>
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="/heart" class="bg-white rounded-2xl p-6 shadow-lg card-hover cursor-pointer">
+                <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #D3968C, #839958);">
+                    <i class="bi bi-heart-pulse-fill text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2" style="color: #0A3323;">Heart Disease</h3>
+                <p class="text-gray-600 text-sm mb-3">Assess heart health</p>
+                <div class="flex items-center gap-2" style="color: #839958;">
+                    <span class="text-sm font-semibold">Start Test</span>
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="/stroke" class="bg-white rounded-2xl p-6 shadow-lg card-hover cursor-pointer">
+                <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #105666, #839958);">
+                    <i class="bi bi-lightning-fill text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2" style="color: #0A3323;">Stroke</h3>
+                <p class="text-gray-600 text-sm mb-3">Evaluate stroke risk</p>
+                <div class="flex items-center gap-2" style="color: #839958;">
+                    <span class="text-sm font-semibold">Start Test</span>
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="/asthma" class="bg-white rounded-2xl p-6 shadow-lg card-hover cursor-pointer">
+                <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #839958, #105666);">
+                    <i class="bi bi-lungs-fill text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2" style="color: #0A3323;">Asthma</h3>
+                <p class="text-gray-600 text-sm mb-3">Check asthma risk</p>
+                <div class="flex items-center gap-2" style="color: #839958;">
+                    <span class="text-sm font-semibold">Start Test</span>
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+            </a>
+        </div>
+
+        <!-- Recent Predictions -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold" style="color: #0A3323;">Recent Predictions</h2>
+            </div>
+
+            {% if predictions %}
+            <div class="space-y-4">
+                {% for prediction in predictions[:5] %}
+                <a href="/results/{{ prediction.id }}" class="block p-4 rounded-xl border-2 border-gray-100 hover:border-medisense-moss transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: #F7F4D5;">
+                                {% if prediction.disease_type == 'diabetes' %}
+                                <i class="bi bi-droplet-fill text-2xl" style="color: #0A3323;"></i>
+                                {% elif prediction.disease_type == 'heart' %}
+                                <i class="bi bi-heart-pulse-fill text-2xl" style="color: #D3968C;"></i>
+                                {% elif prediction.disease_type == 'stroke' %}
+                                <i class="bi bi-lightning-fill text-2xl" style="color: #105666;"></i>
+                                {% else %}
+                                <i class="bi bi-lungs-fill text-2xl" style="color: #839958;"></i>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <h3 class="font-bold" style="color: #0A3323;">{{ prediction.disease_type.capitalize() }}</h3>
+                                <p class="text-sm text-gray-600">{{ prediction.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold {% if prediction.risk_category == 'High' %}text-red-600{% elif prediction.risk_category == 'Medium' %}text-yellow-600{% else %}text-green-600{% endif %}">
+                                {{ prediction.risk_category }}
+                            </div>
+                            <div class="text-sm text-gray-600">{{ prediction.risk_score|round(1) }}%</div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-12">
+                <i class="bi bi-clipboard-data text-6xl mb-4" style="color: #839958; opacity: 0.3;"></i>
+                <p class="text-gray-600 mb-4">No predictions yet</p>
+                <p class="text-sm text-gray-500">Start by taking a health assessment above</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: rgba(131, 153, 88, 0.1);">
+                        <i class="bi bi-chat-dots text-2xl" style="color: #839958;"></i>
+                    </div>
+                    <h3 class="text-xl font-bold" style="color: #0A3323;">Health Chatbot</h3>
+                </div>
+                <p class="text-gray-600 mb-4">Get instant answers to your health questions from our AI assistant</p>
+                <a href="/chatbot" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300" style="background: linear-gradient(to right, #839958, #105666);">
+                    <span>Start Chat</span>
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: rgba(16, 86, 102, 0.1);">
+                        <i class="bi bi-hospital text-2xl" style="color: #105666;"></i>
+                    </div>
+                    <h3 class="text-xl font-bold" style="color: #0A3323;">Find Hospitals</h3>
+                </div>
+                <p class="text-gray-600 mb-4">Locate top hospitals near your location with directions</p>
+                <a href="/hospital" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300" style="background: linear-gradient(to right, #105666, #0A3323);">
+                    <span>View Hospitals</span>
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

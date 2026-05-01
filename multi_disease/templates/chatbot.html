@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Chatbot - Medisense AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        medisense: {
+                            dark: '#0A3323',
+                            moss: '#839958',
+                            beige: '#F7F4D5',
+                            rosy: '#D3968C',
+                            midnight: '#105666',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        #chatMessages {
+            height: calc(100vh - 300px);
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        #chatMessages::-webkit-scrollbar {
+            width: 8px;
+        }
+        #chatMessages::-webkit-scrollbar-track {
+            background: #F7F4D5;
+            border-radius: 10px;
+        }
+        #chatMessages::-webkit-scrollbar-thumb {
+            background: #839958;
+            border-radius: 10px;
+        }
+        .message-bubble {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .typing-indicator span {
+            animation: typing 1.4s infinite;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #F7F4D5;">
+
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/dashboard" class="flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-medisense-dark to-medisense-moss p-2 rounded-xl">
+                        <i class="bi bi-heart-pulse-fill text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold" style="color: #0A3323;">Medisense AI</span>
+                    </div>
+                </a>
+
+                <a href="/dashboard" class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all duration-300" style="color: #839958;">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <div class="mb-6">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-16 h-16 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #839958, #105666);">
+                    <i class="bi bi-chat-dots-fill text-white text-3xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold" style="color: #0A3323;">Health Assistant Chatbot</h1>
+                    <p class="text-gray-600">Ask me anything about health, wellness, or medical conditions</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            
+            <div id="chatMessages" class="p-6 space-y-4">
+                <div class="flex items-start gap-3 message-bubble">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #839958, #105666);">
+                        <i class="bi bi-robot text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="inline-block px-4 py-3 rounded-2xl rounded-tl-none" style="background-color: #F7F4D5;">
+                            <p class="text-gray-800">Hello! I'm your AI health assistant. I can help you with health questions, exercise advice, mental wellness tips, and more. How can I assist you today?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t-2 p-4" style="border-color: #F7F4D5;">
+                <form id="chatForm" class="flex items-center gap-3">
+                    <input 
+                        type="text" 
+                        id="messageInput" 
+                        placeholder="Type your health question here..." 
+                        required
+                        class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-medisense-moss transition-all duration-300"
+                    >
+                    <button 
+                        type="submit" 
+                        id="sendBtn"
+                        class="px-6 py-3 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                        style="background: linear-gradient(to right, #839958, #105666);"
+                    >
+                        <span>Send</span>
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="mt-6 grid md:grid-cols-3 gap-4">
+            <button onclick="quickMessage('What are symptoms of diabetes?')" class="p-4 rounded-xl border-2 border-gray-200 hover:border-medisense-moss transition-all duration-300 text-left">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="bi bi-droplet-fill" style="color: #839958;"></i>
+                    <span class="font-semibold text-sm" style="color: #0A3323;">Diabetes Info</span>
+                </div>
+                <p class="text-xs text-gray-600">Learn about diabetes symptoms</p>
+            </button>
+
+            <button onclick="quickMessage('Give me tips for heart health')" class="p-4 rounded-xl border-2 border-gray-200 hover:border-medisense-moss transition-all duration-300 text-left">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="bi bi-heart-pulse-fill" style="color: #D3968C;"></i>
+                    <span class="font-semibold text-sm" style="color: #0A3323;">Heart Health</span>
+                </div>
+                <p class="text-xs text-gray-600">Get heart health tips</p>
+            </button>
+
+            <button onclick="quickMessage('How can I manage stress?')" class="p-4 rounded-xl border-2 border-gray-200 hover:border-medisense-moss transition-all duration-300 text-left">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="bi bi-emoji-smile-fill" style="color: #105666;"></i>
+                    <span class="font-semibold text-sm" style="color: #0A3323;">Mental Health</span>
+                </div>
+                <p class="text-xs text-gray-600">Stress management advice</p>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        let chatHistory = [];
+
+        function addMessage(message, isUser = false) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start gap-3 message-bubble';
+
+            if (isUser) {
+                messageDiv.classList.add('flex-row-reverse');
+                messageDiv.innerHTML = `
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #0A3323;">
+                        <i class="bi bi-person-fill text-white"></i>
+                    </div>
+                    <div class="flex-1 text-right">
+                        <div class="inline-block px-4 py-3 rounded-2xl rounded-tr-none text-white" style="background: linear-gradient(to right, #0A3323, #839958);">
+                            <p>${message}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #839958, #105666);">
+                        <i class="bi bi-robot text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="inline-block px-4 py-3 rounded-2xl rounded-tl-none" style="background-color: #F7F4D5;">
+                            <p class="text-gray-800" style="white-space: pre-line; line-height: 1.6;">${message}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.className = 'flex items-start gap-3 message-bubble';
+            typingDiv.innerHTML = `
+                <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #839958, #105666);">
+                    <i class="bi bi-robot text-white"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="inline-block px-4 py-3 rounded-2xl rounded-tl-none" style="background-color: #F7F4D5;">
+                        <div class="typing-indicator flex gap-1">
+                            <span class="w-2 h-2 rounded-full" style="background-color: #839958;"></span>
+                            <span class="w-2 h-2 rounded-full" style="background-color: #839958;"></span>
+                            <span class="w-2 h-2 rounded-full" style="background-color: #839958;"></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        async function sendMessage(message) {
+            addMessage(message, true);
+            chatHistory.push({ user: message, assistant: '' });
+
+            showTypingIndicator();
+
+            const messageInput = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendBtn');
+            messageInput.disabled = true;
+            sendBtn.disabled = true;
+
+            try {
+                const response = await fetch('/chatbot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        history: chatHistory.slice(0, -1)
+                    })
+                });
+
+                const data = await response.json();
+
+                removeTypingIndicator();
+
+                if (response.ok) {
+                    addMessage(data.response, false);
+                    chatHistory[chatHistory.length - 1].assistant = data.response;
+                } else {
+                    addMessage('Sorry, I encountered an error. Please try again.', false);
+                }
+            } catch (error) {
+                removeTypingIndicator();
+                addMessage('Sorry, I encountered an error. Please try again.', false);
+            }
+
+            messageInput.disabled = false;
+            sendBtn.disabled = false;
+            messageInput.focus();
+        }
+
+        function quickMessage(message) {
+            document.getElementById('messageInput').value = message;
+            document.getElementById('chatForm').dispatchEvent(new Event('submit'));
+        }
+
+        document.getElementById('chatForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+
+            if (message) {
+                sendMessage(message);
+                messageInput.value = '';
+            }
+        });
+
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('chatForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+
+</body>
+</html>

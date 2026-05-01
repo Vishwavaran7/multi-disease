@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction - Medisense AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        medisense: {
+                            dark: '#0A3323',
+                            moss: '#839958',
+                            beige: '#F7F4D5',
+                            rosy: '#D3968C',
+                            midnight: '#105666',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .input-field:focus {
+            border-color: #D3968C;
+            box-shadow: 0 0 0 3px rgba(211, 150, 140, 0.1);
+        }
+    </style>
+</head>
+<body style="background-color: #F7F4D5;">
+
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/dashboard" class="flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-medisense-dark to-medisense-moss p-2 rounded-xl">
+                        <i class="bi bi-heart-pulse-fill text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold" style="color: #0A3323;">Medisense AI</span>
+                    </div>
+                </a>
+
+                <a href="/dashboard" class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all duration-300" style="color: #D3968C;">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <div class="mb-8">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-16 h-16 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #D3968C, #839958);">
+                    <i class="bi bi-heart-pulse-fill text-white text-3xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold" style="color: #0A3323;">Heart Disease Assessment</h1>
+                    <p class="text-gray-600">Enter your cardiovascular health metrics</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <form id="heartForm" class="space-y-6">
+                
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Age (years)</label>
+                    <input type="number" name="age" required min="1" max="120" class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300" placeholder="Enter your age">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Sex</label>
+                    <select name="sex" required class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300">
+                        <option value="">Select Sex</option>
+                        <option value="0">Female</option>
+                        <option value="1">Male</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Chest Pain Type</label>
+                    <select name="cp" required class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300">
+                        <option value="">Select Chest Pain Type</option>
+                        <option value="0">Typical Angina</option>
+                        <option value="1">Atypical Angina</option>
+                        <option value="2">Non-anginal Pain</option>
+                        <option value="3">Asymptomatic</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Resting Blood Pressure (mm Hg)</label>
+                    <input type="number" name="trestbps" required min="80" max="220" class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300" placeholder="Enter resting blood pressure">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Serum Cholesterol (mg/dL)</label>
+                    <input type="number" name="chol" required min="100" max="600" class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300" placeholder="Enter cholesterol level">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Fasting Blood Sugar > 120 mg/dL</label>
+                    <select name="fbs" required class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300">
+                        <option value="">Select</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Resting ECG Results</label>
+                    <select name="restecg" required class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300">
+                        <option value="">Select ECG Result</option>
+                        <option value="0">Normal</option>
+                        <option value="1">ST-T Wave Abnormality</option>
+                        <option value="2">Left Ventricular Hypertrophy</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Maximum Heart Rate Achieved</label>
+                    <input type="number" name="thalach" required min="60" max="220" class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300" placeholder="Enter maximum heart rate">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Exercise Induced Angina</label>
+                    <select name="exang" required class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300">
+                        <option value="">Select</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">ST Depression (oldpeak)</label>
+                    <input type="number" name="oldpeak" required min="0" max="10" step="0.1" class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300" placeholder="Enter ST depression value">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Slope of Peak Exercise ST Segment</label>
+                    <select name="slope" required class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300">
+                        <option value="">Select Slope</option>
+                        <option value="0">Upsloping</option>
+                        <option value="1">Flat</option>
+                        <option value="2">Downsloping</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Number of Major Vessels (0-3)</label>
+                    <select name="ca" required class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300">
+                        <option value="">Select Number</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" style="color: #0A3323;">Thalassemia</label>
+                    <select name="thal" required class="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-xl bg-white focus:outline-none transition-all duration-300">
+                        <option value="">Select Thalassemia Type</option>
+                        <option value="0">Normal</option>
+                        <option value="1">Fixed Defect</option>
+                        <option value="2">Reversible Defect</option>
+                        <option value="3">Other</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full py-4 text-white text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5" style="background: linear-gradient(to right, #D3968C, #839958);">
+                    <span class="flex items-center justify-center gap-2">
+                        <span id="btnText">Predict Heart Disease Risk</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </span>
+                </button>
+
+            </form>
+        </div>
+
+        <div id="loadingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center">
+                <div class="w-16 h-16 border-4 rounded-full mx-auto mb-4 animate-spin" style="border-color: #D3968C; border-top-color: transparent;"></div>
+                <h3 class="text-xl font-bold mb-2" style="color: #0A3323;">Analyzing Your Data</h3>
+                <p class="text-gray-600">Please wait while our AI processes your information...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('heartForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const loadingModal = document.getElementById('loadingModal');
+
+            submitBtn.disabled = true;
+            loadingModal.classList.remove('hidden');
+
+            const formData = new FormData(this);
+            const features = [
+                parseFloat(formData.get('age')),
+                parseFloat(formData.get('sex')),
+                parseFloat(formData.get('cp')),
+                parseFloat(formData.get('trestbps')),
+                parseFloat(formData.get('chol')),
+                parseFloat(formData.get('fbs')),
+                parseFloat(formData.get('restecg')),
+                parseFloat(formData.get('thalach')),
+                parseFloat(formData.get('exang')),
+                parseFloat(formData.get('oldpeak')),
+                parseFloat(formData.get('slope')),
+                parseFloat(formData.get('ca')),
+                parseFloat(formData.get('thal'))
+            ];
+
+            try {
+                const response = await fetch('/predict/heart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ features: features })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    sessionStorage.setItem('predictionResult', JSON.stringify(data));
+                    window.location.href = '/results/' + data.prediction_id;
+                } else {
+                    alert('Error: ' + (data.error || 'Prediction failed'));
+                    submitBtn.disabled = false;
+                    loadingModal.classList.add('hidden');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+                submitBtn.disabled = false;
+                loadingModal.classList.add('hidden');
+            }
+        });
+    </script>
+
+</body>
+</html>
