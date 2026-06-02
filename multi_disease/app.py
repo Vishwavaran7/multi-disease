@@ -99,7 +99,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
 
 @app.route('/')
 def index():
-    return "MediSense AI Running"
+    return render_template('index.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
