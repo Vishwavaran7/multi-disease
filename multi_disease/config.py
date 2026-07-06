@@ -3,7 +3,9 @@ import os
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'medisense-ai-secret-key-2024'
     
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///medisense.db'
+    # Use absolute path for SQLite so it works on any hosting environment
+    _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or f'sqlite:///{os.path.join(_BASE_DIR, "medisense.db")}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY') or 'AIzaSyAWQouTsVaatOo760akGvNZH2C8e5YTnSg'
