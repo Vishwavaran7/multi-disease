@@ -6,7 +6,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///medisense.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
-    GEMINI_API_KEY = 'AIzaSyBSn79F5in1GwL4IZMF-RkB2QotYylFv7Y'
+    GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY') or 'AIzaSyAWQouTsVaatOo760akGvNZH2C8e5YTnSg'
     GEMINI_MODEL = 'gemini-2.5-flash'
     
     MAIL_SERVER = 'smtp.gmail.com'

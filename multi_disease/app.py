@@ -48,7 +48,7 @@ def get_risk_category(prediction, probability):
             return "High", prob
 
 def find_nearby_hospitals(latitude, longitude, radius=5000):
-    overpass_url = "http://overpass-api.de/api/interpreter"
+    overpass_url = "https://overpass-api.de/api/interpreter"
     overpass_query = f"""
     [out:json];
     (
@@ -59,8 +59,19 @@ def find_nearby_hospitals(latitude, longitude, radius=5000):
     out center;
     """
     
-    response = requests.get(overpass_url, params={'data': overpass_query})
-    data = response.json()
+    try:
+        headers = {
+            'User-Agent': 'MediSenseAI/1.0 (vishwavaran7@gmail.com; contact: vishwavaran7@gmail.com)'
+        }
+        response = requests.get(overpass_url, params={'data': overpass_query}, headers=headers, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+        else:
+            print(f"Overpass API returned status {response.status_code}: {response.text[:200]}")
+            return []
+    except Exception as e:
+        print(f"Overpass API request failed: {e}")
+        return []
     
     hospitals = []
     for element in data.get('elements', []):
@@ -87,6 +98,7 @@ def find_nearby_hospitals(latitude, longitude, radius=5000):
     
     hospitals.sort(key=lambda x: x['distance'])
     return hospitals[:5]
+
 
 def calculate_distance(lat1, lon1, lat2, lon2):
     R = 6371
