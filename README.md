@@ -1,6 +1,6 @@
 # MediSense.AI — Multi-Disease Prediction & AI Advisory Platform
 
-[![MediSense Live](https://img.shields.io/badge/MediSense.AI-Live-00e5ff?style=for-the-badge&logo=render)](https://multi-disease-1multi-disease.onrender.com)
+[![MediSense Live](https://img.shields.io/badge/MediSense.AI-Live-00e5ff?style=for-the-badge&logo=render)](https://multi-disease-1multi-disease.onrender.com/)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-7c3aed?style=for-the-badge&logo=github)](https://github.com/Vishwavaran7/multi-disease)
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-Web%20Framework-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
